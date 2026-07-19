@@ -1,0 +1,95 @@
+.eyebrow {
+    margin-bottom: 6px;
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.btn {
+    padding: 11px 18px;
+    border: 0;
+    border-radius: 9px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-primary {
+    color: #052e16;
+    background: var(--primary);
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+}
+
+.panel,
+.kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+.panel {
+    padding: 24px;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.panel-header a {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.empty-state {
+    padding: 44px 20px;
+    text-align: center;
+    color: var(--muted);
+}
+
+.empty-icon {
+    margin-bottom: 12px;
+    font-size: 2rem;
+}
+
+.kpi-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.kpi-icon {
+    font-size: 1.25rem;
+}
+
+.flash-container {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.flash-message {
+    padding: 14px 16px;
+    border-radius: 10px;
+}
+
+.flash-success {
+    color: #bbf7d0;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid #22c55e;
+}
+
+.flash-error,
+.flash-danger {
+    color: #fecaca;
+    background: rgba(248, 113, 113, 0.15);
+    border: 1px solid #f87171;
+}

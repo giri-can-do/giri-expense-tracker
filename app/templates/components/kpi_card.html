@@ -1,0 +1,12 @@
+<article class="kpi-card">
+    <div class="kpi-card-header">
+        <span class="kpi-icon">{{ icon }}</span>
+        <span class="kpi-label">{{ label }}</span>
+    </div>
+
+    <strong class="kpi-value {{ value_class | default('') }}">
+        {{ value }}
+    </strong>
+
+    <small>{{ description }}</small>
+</article>

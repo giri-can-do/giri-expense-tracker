@@ -1,0 +1,19 @@
+<section class="page-header">
+    <div>
+        {% if eyebrow %}
+            <p class="eyebrow">{{ eyebrow }}</p>
+        {% endif %}
+
+        <h1>{{ heading }}</h1>
+
+        {% if description %}
+            <p class="page-description">{{ description }}</p>
+        {% endif %}
+    </div>
+
+    {% if action_text %}
+        <a href="{{ action_url }}" class="btn btn-primary">
+            {{ action_text }}
+        </a>
+    {% endif %}
+</section>

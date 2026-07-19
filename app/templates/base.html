@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Giri Expense Tracker{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="container navbar">
+            <a class="brand" href="{{ url_for('dashboard.dashboard') }}">
+                <span>💰</span>
+                Giri Expense Tracker
+            </a>
+
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
+                <a href="#">Transactions</a>
+                <a href="#">Accounts</a>
+                <a href="#">Liabilities</a>
+                <a href="{{ url_for('auth.logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Login</a>
+                <a href="{{ url_for('auth.register') }}">Register</a>
+            {% endif %}
+
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+                aria-label="Toggle navigation"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+            <!-- <nav class="nav-links" id="navLinks">
+                <a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
+                <a href="#">Transactions</a>
+                <a href="#">Accounts</a>
+                <a href="#">Liabilities</a>
+            </nav> -->
+        </div>
+    </header>
+
+    <main class="app-main">
+        <div class="container">
+            {% include "components/flash_messages.html" %}
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+</body>
+</html>

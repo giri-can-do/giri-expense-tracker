@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Giri Expense Tracker{% endblock %}
+
+{% block content %}
+
+{% set eyebrow = "Financial Overview" %}
+{% set heading = "Dashboard" %}
+{% set description = "Understand where your money is going and whether your financial health is improving." %}
+{% set action_text = "+ Add Transaction" %}
+{% set action_url = "#" %}
+
+{% include "components/page_header.html" %}
+
+<section class="kpi-grid">
+    {% set icon = "💰" %}
+    {% set label = "Monthly Income" %}
+    {% set value = "¥0" %}
+    {% set value_class = "positive" %}
+    {% set description = "No income recorded yet" %}
+    {% include "components/kpi_card.html" %}
+
+    {% set icon = "💸" %}
+    {% set label = "Monthly Expenses" %}
+    {% set value = "¥0" %}
+    {% set value_class = "negative" %}
+    {% set description = "No expenses recorded yet" %}
+    {% include "components/kpi_card.html" %}
+
+    {% set icon = "📈" %}
+    {% set label = "Monthly Savings" %}
+    {% set value = "¥0" %}
+    {% set value_class = "positive" %}
+    {% set description = "Income minus expenses" %}
+    {% include "components/kpi_card.html" %}
+
+    {% set icon = "🏦" %}
+    {% set label = "Net Worth" %}
+    {% set value = "¥0" %}
+    {% set value_class = "positive" %}
+    {% set description = "Assets minus liabilities" %}
+    {% include "components/kpi_card.html" %}
+</section>
+
+<section class="content-grid">
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Recent Transactions</h2>
+            <a href="#">View All</a>
+        </div>
+
+        <div class="empty-state">
+            {% set icon = "🧾" %}
+            {% set title = "No transactions yet" %}
+            {% set message = "Add your first transaction to begin tracking your money." %}
+
+            {% include "components/empty_state.html" %}
+        </div>
+    </article>
+
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Financial Health</h2>
+        </div>
+
+        <div class="health-score">
+            <strong>🌱</strong>
+            <span>Start your financial journey<br>
+            Add your first transaction.</span>
+        </div>
+
+        <div class="health-list">
+            <div>
+                <span>Savings Rate</span>
+                <strong>0%</strong>
+            </div>
+
+            <div>
+                <span>Total Debt</span>
+                <strong>¥0</strong>
+            </div>
+
+            <div>
+                <span>Active Accounts</span>
+                <strong>0</strong>
+            </div>
+        </div>
+    </article>
+</section>
+{% endblock %}
