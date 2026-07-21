@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Categories | Giri Expense Tracker{% endblock %}
+
+{% block content %}
+
+{% set eyebrow = "Transaction Settings" %}
+{% set heading = "Categories" %}
+{% set description = "Create and manage your income and expense categories." %}
+{% include "components/page_header.html" %}
+
+<section class="content-grid">
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Add Category</h2>
+        </div>
+
+        <form method="post">
+            <div class="form-group">
+                <label for="name">Category Name</label>
+                <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Dining Out"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="category_type">Category Type</label>
+                <select id="category_type" name="category_type" required>
+                    <option value="">Select type</option>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="icon">Icon</label>
+                <input
+                    id="icon"
+                    name="icon"
+                    type="text"
+                    maxlength="20"
+                    placeholder="🍽️"
+                >
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+                Add Category
+            </button>
+        </form>
+    </article>
+
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Your Categories</h2>
+        </div>
+
+        <h3 class="category-heading">Income</h3>
+
+        <div class="category-list">
+            {% for category in income_categories %}
+                {% include "categories/_category_item.html" %}
+            {% else %}
+                <p class="muted-text">No income categories.</p>
+            {% endfor %}
+        </div>
+
+        <h3 class="category-heading">Expenses</h3>
+
+        <div class="category-list">
+            {% for category in expense_categories %}
+                {% include "categories/_category_item.html" %}
+            {% else %}
+                <p class="muted-text">No expense categories.</p>
+            {% endfor %}
+        </div>
+    </article>
+</section>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Transactions | Giri Expense Tracker{% endblock %}
+
+{% block content %}
+
+{% set eyebrow = "Money Activity" %}
+{% set heading = "Transactions" %}
+{% set description = "Review your recorded income and expenses." %}
+{% set action_text = "+ Add Transaction" %}
+{% set action_url = url_for('transactions.create') %}
+{% include "components/page_header.html" %}
+
+<article class="panel">
+    {% if transactions %}
+        <div class="transaction-list">
+            {% for transaction in transactions %}
+                <div class="transaction-item">
+                    <div class="transaction-details">
+                        {% if transaction.transaction_type == "debt_payment" %}
+                            <span class="transaction-icon">💳</span>
+
+                            <div>
+                                <strong>
+                                    Debt Payment — {{ transaction.liability.name }}
+                                </strong>
+
+                                <span>
+                                    {{ transaction.description or "Liability payment" }}
+                                </span>
+
+                                <small>
+                                    {{ transaction.transaction_date.strftime("%Y-%m-%d") }}
+                                    · {{ transaction.account.name }}
+                                </small>
+                            </div>
+                        {% else %}
+                            <span class="transaction-icon">
+                                {{ transaction.category.icon }}
+                            </span>
+
+                            <div>
+                                <strong>{{ transaction.category.name }}</strong>
+
+                                <span>
+                                    {{ transaction.description or transaction.account.name }}
+                                </span>
+
+                                <small>
+                                    {{ transaction.transaction_date.strftime("%Y-%m-%d") }}
+                                    · {{ transaction.account.name }}
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <strong class="
+                        transaction-amount
+                        {{ transaction.transaction_type }}
+                    ">
+                        {% if transaction.transaction_type == "income" %}
+                            +
+                        {% else %}
+                            -
+                        {% endif %}
+
+                        ¥{{ "{:,.0f}".format(transaction.amount) }}
+                    </strong>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% set icon = "🧾" %}
+        {% set title = "No transactions yet" %}
+        {% set message = "Add your first income or expense transaction." %}
+        {% include "components/empty_state.html" %}
+    {% endif %}
+</article>
+
+{% endblock %}

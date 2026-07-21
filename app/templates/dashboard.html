@@ -8,35 +8,39 @@
 {% set heading = "Dashboard" %}
 {% set description = "Understand where your money is going and whether your financial health is improving." %}
 {% set action_text = "+ Add Transaction" %}
-{% set action_url = "#" %}
+{% set action_url = url_for('transactions.create') %}
 
 {% include "components/page_header.html" %}
 
 <section class="kpi-grid">
     {% set icon = "💰" %}
     {% set label = "Monthly Income" %}
-    {% set value = "¥0" %}
+    {% set value = "¥{:,.0f}".format(dashboard_data.summary.income) %}
     {% set value_class = "positive" %}
     {% set description = "No income recorded yet" %}
     {% include "components/kpi_card.html" %}
 
     {% set icon = "💸" %}
     {% set label = "Monthly Expenses" %}
-    {% set value = "¥0" %}
+    {% set value = "¥{:,.0f}".format(dashboard_data.summary.expenses) %}
     {% set value_class = "negative" %}
     {% set description = "No expenses recorded yet" %}
     {% include "components/kpi_card.html" %}
 
     {% set icon = "📈" %}
     {% set label = "Monthly Savings" %}
-    {% set value = "¥0" %}
-    {% set value_class = "positive" %}
+    {% set value = "¥{:,.0f}".format(dashboard_data.summary.savings) %}
+    {% set value_class =
+        "positive"
+        if dashboard_data.summary.savings >= 0
+        else "negative"
+    %}
     {% set description = "Income minus expenses" %}
     {% include "components/kpi_card.html" %}
 
     {% set icon = "🏦" %}
     {% set label = "Net Worth" %}
-    {% set value = "¥0" %}
+    {% set value = "¥{:,.0f}".format(dashboard_data.net_worth) %}
     {% set value_class = "positive" %}
     {% set description = "Assets minus liabilities" %}
     {% include "components/kpi_card.html" %}
@@ -49,13 +53,75 @@
             <a href="#">View All</a>
         </div>
 
-        <div class="empty-state">
+        <!-- <div class="empty-state">
             {% set icon = "🧾" %}
             {% set title = "No transactions yet" %}
             {% set message = "Add your first transaction to begin tracking your money." %}
 
             {% include "components/empty_state.html" %}
-        </div>
+        </div> -->
+        {% if dashboard_data.recent_transactions %}
+            <div class="transaction-list">
+                {% for transaction in dashboard_data.recent_transactions %}
+                    <div class="transaction-item">
+                        <div class="transaction-details">
+                            {% if transaction.transaction_type == "debt_payment" %}
+                                <span class="transaction-icon">💳</span>
+
+                                <div>
+                                    <strong>
+                                        Debt Payment — {{ transaction.liability.name }}
+                                    </strong>
+
+                                    <span>
+                                        {{ transaction.description or "Liability payment" }}
+                                    </span>
+
+                                    <small>
+                                        {{ transaction.transaction_date.strftime("%Y-%m-%d") }}
+                                        · {{ transaction.account.name }}
+                                    </small>
+                                </div>
+                            {% else %}
+                                <span class="transaction-icon">
+                                    {{ transaction.category.icon }}
+                                </span>
+
+                                <div>
+                                    <strong>{{ transaction.category.name }}</strong>
+
+                                    <span>
+                                        {{ transaction.description or transaction.account.name }}
+                                    </span>
+
+                                    <small>
+                                        {{ transaction.transaction_date.strftime("%Y-%m-%d") }}
+                                        · {{ transaction.account.name }}
+                                    </small>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <strong class="
+                            transaction-amount
+                            {{ transaction.transaction_type }}
+                        ">
+                            {% if transaction.transaction_type == "income" %}
+                                +
+                            {% else %}
+                                -
+                            {% endif %}
+                            ¥{{ "{:,.0f}".format(transaction.amount) }}
+                        </strong>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% set icon = "🧾" %}
+            {% set title = "No transactions yet" %}
+            {% set message = "Add your first transaction to begin tracking your money." %}
+            {% include "components/empty_state.html" %}
+        {% endif %}
     </article>
 
     <article class="panel">
@@ -64,25 +130,45 @@
         </div>
 
         <div class="health-score">
-            <strong>🌱</strong>
-            <span>Start your financial journey<br>
-            Add your first transaction.</span>
+            {% if dashboard_data.summary.income == 0 %}
+                <strong>—</strong>
+                <span>Not enough data yet</span>
+            {% elif dashboard_data.summary.savings_rate >= 30 %}
+                <strong>🌱 Good</strong>
+                <span>Your savings rate is healthy.</span>
+            {% elif dashboard_data.summary.savings_rate >= 10 %}
+                <strong>⚖️ Fair</strong>
+                <span>There is room to improve.</span>
+            {% else %}
+                <strong>⚠️ Needs Attention</strong>
+                <span>Expenses are consuming most of your income.</span>
+            {% endif %}
         </div>
 
         <div class="health-list">
             <div>
                 <span>Savings Rate</span>
-                <strong>0%</strong>
+                <strong>
+                    {{ "{:.1f}".format(
+                        dashboard_data.summary.savings_rate
+                    ) }}%
+                </strong>
             </div>
 
             <div>
                 <span>Total Debt</span>
-                <strong>¥0</strong>
+                <strong>
+                    ¥{{ "{:,.0f}".format(
+                        dashboard_data.total_debt
+                    ) }}
+                </strong>
             </div>
 
             <div>
                 <span>Active Accounts</span>
-                <strong>0</strong>
+                <strong>
+                    {{ dashboard_data.active_accounts }}
+                </strong>
             </div>
         </div>
     </article>

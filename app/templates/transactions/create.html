@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Add Transaction | Giri Expense Tracker{% endblock %}
+
+{% block content %}
+
+{% set eyebrow = "Money Activity" %}
+{% set heading = "Add Transaction" %}
+{% set description = "Record income or expenses and keep your financial dashboard accurate." %}
+{% include "components/page_header.html" %}
+
+<article class="panel transaction-form-panel">
+    <form method="post">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="transaction_date">Date</label>
+
+                <input
+                    id="transaction_date"
+                    name="transaction_date"
+                    type="date"
+                    value="{{ request.form.get('transaction_date', today) }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="transaction_type">Type</label>
+
+                <select
+                    id="transaction_type"
+                    name="transaction_type"
+                    required
+                >
+                    <option value="">Select type</option>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                    <option value="debt_payment">Debt Payment</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="account_id">Account</label>
+
+                <select id="account_id" name="account_id" required>
+                    <option value="">Select account</option>
+
+                    {% for account in accounts %}
+                        <option value="{{ account.id }}">
+                            {{ account.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group" id="categoryGroup">
+                <label for="category_id">Category</label>
+
+                <select id="category_id" name="category_id">
+                    <option value="">Select transaction type first</option>
+
+                    {% for category in categories %}
+                        <option
+                            value="{{ category.id }}"
+                            data-type="{{ category.category_type }}"
+                        >
+                            {{ category.icon }} {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group hidden" id="liabilityGroup">
+                <label for="liability_id">Liability</label>
+
+                <select id="liability_id" name="liability_id">
+                    <option value="">Select liability</option>
+
+                    {% for liability in liabilities %}
+                        <option value="{{ liability.id }}">
+                            {{ liability.name }}
+                            — ¥{{ "{:,.0f}".format(liability.current_balance) }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Amount</label>
+
+                <input
+                    id="amount"
+                    name="amount"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="1000"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+
+                <input
+                    id="description"
+                    name="description"
+                    type="text"
+                    maxlength="255"
+                    placeholder="Monthly salary or grocery shopping"
+                >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="note">Note</label>
+
+            <textarea
+                id="note"
+                name="note"
+                rows="4"
+                placeholder="Optional notes"
+            ></textarea>
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            Save Transaction
+        </button>
+    </form>
+</article>
+
+<script src="{{ url_for('static', filename='js/transaction-form.js') }}"></script>
+
+{% endblock %}

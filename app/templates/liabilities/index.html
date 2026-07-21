@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+
+{% block title %}Liabilities | Giri Expense Tracker{% endblock %}
+
+{% block content %}
+
+{% set eyebrow = "Debt Management" %}
+{% set heading = "Liabilities" %}
+{% set description = "Track what you owe and monitor your journey toward becoming debt-free." %}
+{% include "components/page_header.html" %}
+
+<section class="kpi-grid liability-summary-grid">
+    {% set icon = "📋" %}
+    {% set label = "Total Original Debt" %}
+    {% set value = "¥{:,.0f}".format(summary.original) %}
+    {% set value_class = "" %}
+    {% set description = "Total amount originally borrowed" %}
+    {% include "components/kpi_card.html" %}
+
+    {% set icon = "💳" %}
+    {% set label = "Remaining Debt" %}
+    {% set value = "¥{:,.0f}".format(summary.remaining) %}
+    {% set value_class = "negative" %}
+    {% set description = "Current outstanding balance" %}
+    {% include "components/kpi_card.html" %}
+
+    {% set icon = "✅" %}
+    {% set label = "Debt Paid" %}
+    {% set value = "¥{:,.0f}".format(summary.paid) %}
+    {% set value_class = "positive" %}
+    {% set description = "Progress toward becoming debt-free" %}
+    {% include "components/kpi_card.html" %}
+
+    {% set icon = "📅" %}
+    {% set label = "Monthly Commitment" %}
+    {% set value = "¥{:,.0f}".format(summary.monthly) %}
+    {% set value_class = "" %}
+    {% set description = "Minimum monthly debt payments" %}
+    {% include "components/kpi_card.html" %}
+</section>
+
+<article class="panel debt-progress-panel">
+    <div class="panel-header">
+        <div>
+            <h2>Debt-Free Progress</h2>
+            <p class="muted-text">
+                You have paid
+                ¥{{ "{:,.0f}".format(summary.paid) }}
+                of
+                ¥{{ "{:,.0f}".format(summary.original) }}.
+            </p>
+        </div>
+
+        <strong class="debt-progress-percent">
+            {{ "{:.1f}".format(summary.progress) }}%
+        </strong>
+    </div>
+
+    <div class="debt-progress-track">
+        <div
+            class="debt-progress-bar"
+            style="width: {{ summary.progress }}%;"
+        ></div>
+    </div>
+
+    <div class="debt-progress-labels">
+        <span>Paid: ¥{{ "{:,.0f}".format(summary.paid) }}</span>
+        <span>
+            Remaining: ¥{{ "{:,.0f}".format(summary.remaining) }}
+        </span>
+    </div>
+</article>
+
+<section class="content-grid">
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Add Liability</h2>
+        </div>
+
+        <form method="post">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="name">Liability Name</label>
+                    <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="Personal Loan"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="liability_type">
+                        Liability Type
+                    </label>
+
+                    <select
+                        id="liability_type"
+                        name="liability_type"
+                        required
+                    >
+                        <option value="">Select type</option>
+                        <option value="personal_loan">
+                            Personal Loan
+                        </option>
+                        <option value="car_loan">
+                            Car Loan
+                        </option>
+                        <option value="education_loan">
+                            Education Loan
+                        </option>
+                        <option value="mortgage">
+                            Mortgage
+                        </option>
+                        <option value="borrowed_money">
+                            Borrowed Money
+                        </option>
+                        <option value="other">
+                            Other
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="lender">Lender</label>
+                    <input
+                        id="lender"
+                        name="lender"
+                        type="text"
+                        placeholder="Bank or person's name"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="payment_type">
+                        Payment Type
+                    </label>
+
+                    <select
+                        id="payment_type"
+                        name="payment_type"
+                        required
+                    >
+                        <option value="installment">
+                            Installment
+                        </option>
+                        <option value="revolving">
+                            Revolving
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="original_amount">
+                        Original Amount
+                    </label>
+                    <input
+                        id="original_amount"
+                        name="original_amount"
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="current_balance">
+                        Current Balance
+                    </label>
+                    <input
+                        id="current_balance"
+                        name="current_balance"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="interest_rate">
+                        Interest Rate (%)
+                    </label>
+                    <input
+                        id="interest_rate"
+                        name="interest_rate"
+                        type="number"
+                        min="0"
+                        step="0.001"
+                        value="0"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="minimum_payment">
+                        Minimum Monthly Payment
+                    </label>
+                    <input
+                        id="minimum_payment"
+                        name="minimum_payment"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="due_day">
+                        Monthly Due Day
+                    </label>
+                    <input
+                        id="due_day"
+                        name="due_day"
+                        type="number"
+                        min="1"
+                        max="31"
+                        placeholder="25"
+                    >
+                </div>
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+                Add Liability
+            </button>
+        </form>
+    </article>
+
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Your Liabilities</h2>
+        </div>
+
+        {% if liabilities %}
+            <div class="liability-list">
+                {% for liability in liabilities %}
+                    {% set paid_amount =
+                            liability.original_amount - liability.current_balance
+                        %}
+
+                        {% set progress =
+                            (
+                                paid_amount / liability.original_amount * 100
+                                if liability.original_amount > 0
+                                else 0
+                            )
+                        %}
+
+                    <div class="
+                        liability-item
+                        {% if not liability.is_active %}inactive{% endif %}
+                    ">
+                        <div class="liability-main">
+                            <div class="liability-header">
+                                <div>
+                                    <strong>{{ liability.name }}</strong>
+
+                                    <span>
+                                        {{ liability.liability_type
+                                            | replace("_", " ")
+                                            | title }}
+                                    </span>
+
+                                    {% if liability.lender %}
+                                        <small>{{ liability.lender }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="liability-balance">
+                                    <small>Remaining</small>
+
+                                    <strong class="negative">
+                                        ¥{{ "{:,.0f}".format(
+                                            liability.current_balance
+                                        ) }}
+                                    </strong>
+
+                                    <form
+                                        method="post"
+                                        action="{{ url_for(
+                                            'liabilities.toggle',
+                                            liability_id=liability.id
+                                        ) }}"
+                                    >
+                                        <button
+                                            class="btn btn-secondary liability-close-btn"
+                                            type="submit"
+                                        >
+                                            {{ "Close Loan" if liability.is_active else "Reopen" }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="liability-progress-meta">
+                                <span>
+                                    Paid:
+                                    ¥{{ "{:,.0f}".format(paid_amount) }}
+                                </span>
+
+                                <strong>
+                                    {{ "{:.1f}".format(progress) }}%
+                                </strong>
+                            </div>
+
+                            <div class="liability-progress-track">
+                                <div
+                                    class="liability-progress-bar"
+                                    style="width: {{ progress }}%;"
+                                ></div>
+                            </div>
+
+                            <div class="liability-details">
+                                <span>
+                                    Original:
+                                    ¥{{ "{:,.0f}".format(
+                                        liability.original_amount
+                                    ) }}
+                                </span>
+
+                                <span>
+                                    Interest:
+                                    {{ liability.interest_rate }}%
+                                </span>
+
+                                <span>
+                                    Monthly:
+                                    ¥{{ "{:,.0f}".format(
+                                        liability.minimum_payment
+                                    ) }}
+                                </span>
+
+                                {% if liability.due_day %}
+                                    <span>Due: Day {{ liability.due_day }}</span>
+                                {% endif %}
+                            </div>
+
+                            {% set payments = liability.payments
+                                | selectattr("transaction_type", "equalto", "debt_payment")
+                                | list
+                            %}
+
+                            <details class="liability-history">
+                                <summary class="liability-history-toggle">
+                                    Payment History ({{ payments | length }})
+                                </summary>
+
+                                <div class="liability-history-content">
+                                    {% if payments %}
+                                        <div class="liability-payment-list">
+                                            {% for payment in payments
+                                                | sort(attribute="transaction_date", reverse=true)
+                                            %}
+                                                <div class="liability-payment-item">
+                                                    <div>
+                                                        <strong>
+                                                            {{ payment.transaction_date.strftime("%Y-%m-%d") }}
+                                                        </strong>
+
+                                                        <small>
+                                                            {{ payment.account.name }}
+                                                            {% if payment.description %}
+                                                                · {{ payment.description }}
+                                                            {% endif %}
+                                                        </small>
+                                                    </div>
+
+                                                    <strong class="positive">
+                                                        ¥{{ "{:,.0f}".format(payment.amount) }}
+                                                    </strong>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <p class="muted-text">
+                                            No debt payments recorded yet.
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </details>
+
+                            
+                        </div>
+
+                        <form
+                            method="post"
+                            action="{{ url_for(
+                                'liabilities.toggle',
+                                liability_id=liability.id
+                            ) }}"
+                        >
+                            <button class="btn btn-secondary" type="submit">
+                                {{ "Close" if liability.is_active else "Reopen" }}
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% set icon = "💳" %}
+            {% set title = "No liabilities recorded" %}
+            {% set message = "Add your loans or borrowed money to calculate accurate net worth." %}
+            {% include "components/empty_state.html" %}
+        {% endif %}
+    </article>
+</section>
+
+{% endblock %}

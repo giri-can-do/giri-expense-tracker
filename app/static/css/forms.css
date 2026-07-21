@@ -62,3 +62,65 @@
     color: var(--primary);
     font-weight: 700;
 }
+
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    outline: none;
+}
+
+.form-group select:focus {
+    border-color: var(--primary);
+}
+
+.account-list {
+    display: grid;
+    gap: 12px;
+}
+
+.account-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.account-item span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    resize: vertical;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    outline: none;
+}
+
+.form-group textarea:focus {
+    border-color: var(--primary);
+}
+
+@media (max-width: 700px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}

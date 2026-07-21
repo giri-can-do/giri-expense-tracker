@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
 </head>
 
 <body>
@@ -22,9 +23,10 @@
 
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
-                <a href="#">Transactions</a>
-                <a href="#">Accounts</a>
-                <a href="#">Liabilities</a>
+                <a href="{{ url_for('transactions.index') }}">Transactions</a>
+                <a href="{{ url_for('accounts.index') }}">Accounts</a>
+                <a href="{{ url_for('categories.index') }}">Categories</a>
+                <a href="{{ url_for('liabilities.index') }}">Liabilities</a>
                 <a href="{{ url_for('auth.logout') }}">Logout</a>
             {% else %}
                 <a href="{{ url_for('auth.login') }}">Login</a>
@@ -40,13 +42,6 @@
             >
                 ☰
             </button>
-
-            <!-- <nav class="nav-links" id="navLinks">
-                <a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
-                <a href="#">Transactions</a>
-                <a href="#">Accounts</a>
-                <a href="#">Liabilities</a>
-            </nav> -->
         </div>
     </header>
 

@@ -64,6 +64,18 @@ class Transaction(db.Model):
         onupdate=lambda: datetime.now(timezone.utc),
     )
 
+    liability_id = db.Column(
+        db.Integer,
+        db.ForeignKey("liabilities.id"),
+        nullable=True,
+        index=True,
+    )
+
+    liability = db.relationship(
+        "Liability",
+        back_populates="payments",
+    )
+
     user = db.relationship("User", back_populates="transactions")
     account = db.relationship("Account", back_populates="transactions")
     category = db.relationship("Category", back_populates="transactions")

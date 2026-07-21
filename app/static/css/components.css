@@ -93,3 +93,359 @@
     background: rgba(248, 113, 113, 0.15);
     border: 1px solid #f87171;
 }
+
+.category-heading {
+    margin: 24px 0 12px;
+}
+
+.category-list {
+    display: grid;
+    gap: 10px;
+}
+
+.category-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.category-item > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.category-item small {
+    display: block;
+    color: var(--muted);
+}
+
+.category-item.inactive {
+    opacity: 0.55;
+}
+
+.category-icon {
+    font-size: 1.4rem;
+}
+
+.muted-text {
+    color: var(--muted);
+}
+
+.transaction-list {
+    display: grid;
+    gap: 12px;
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.transaction-details {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.transaction-details span,
+.transaction-details small {
+    display: block;
+    color: var(--muted);
+}
+
+.transaction-icon {
+    font-size: 1.5rem;
+}
+
+.transaction-amount.income {
+    color: var(--primary);
+}
+
+.transaction-amount.expense {
+    color: var(--danger);
+}
+
+.liability-list {
+    display: grid;
+    gap: 12px;
+}
+
+.liability-item {
+    display: block;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.liability-item span,
+.liability-item small {
+    display: block;
+    color: var(--muted);
+}
+
+.liability-item.inactive {
+    opacity: 0.55;
+}
+
+.liability-summary {
+    display: grid;
+    justify-items: end;
+    gap: 5px;
+}
+
+.negative {
+    color: var(--danger);
+}
+
+@media (max-width: 600px) {
+    .liability-item {
+        flex-direction: column;
+    }
+
+    .liability-summary {
+        justify-items: start;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.transaction-amount.debt_payment {
+    color: #fb923c;
+}
+
+.liability-summary-grid {
+    margin-bottom: 28px;
+}
+
+.debt-progress-panel {
+    margin-bottom: 28px;
+}
+
+.debt-progress-percent {
+    color: var(--primary);
+    font-size: 1.75rem;
+}
+
+.debt-progress-track {
+    width: 100%;
+    height: 14px;
+    overflow: hidden;
+    background: var(--bg);
+    border-radius: 999px;
+}
+
+.debt-progress-bar {
+    height: 100%;
+    background: var(--primary);
+    border-radius: inherit;
+    transition: width 0.3s ease;
+}
+
+.debt-progress-labels {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 560px) {
+    .debt-progress-labels {
+        flex-direction: column;
+        gap: 4px;
+    }
+}
+
+.liability-main {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+.liability-header,
+.liability-progress-meta,
+.liability-details {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.liability-header {
+    align-items: flex-start;
+}
+
+.liability-progress-meta {
+    margin-top: 18px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.liability-progress-meta strong {
+    color: var(--primary);
+}
+
+.liability-progress-track {
+    width: 100%;
+    height: 10px;
+    margin-top: 7px;
+    overflow: hidden;
+    background: var(--bg);
+    border-radius: 999px;
+}
+
+.liability-progress-bar {
+    height: 100%;
+    background: var(--primary);
+    border-radius: inherit;
+    transition: width 0.3s ease;
+}
+
+.liability-details {
+    flex-wrap: wrap;
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+    .liability-header,
+    .liability-progress-meta {
+        align-items: flex-start;
+    }
+
+    .liability-header {
+        flex-direction: column;
+    }
+}
+
+.liability-history {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.liability-history-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.liability-history-header span {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.liability-payment-list {
+    display: grid;
+    gap: 8px;
+}
+
+.liability-payment-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 12px;
+    background: var(--bg);
+    border-radius: 8px;
+}
+
+.liability-payment-item small {
+    display: block;
+    color: var(--muted);
+}
+
+.liability-history {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.liability-history-toggle {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    color: var(--text);
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+}
+
+.liability-history-toggle::-webkit-details-marker {
+    display: none;
+}
+
+.liability-history-toggle::after {
+    content: "＋";
+    color: var(--primary);
+}
+
+.liability-history[open] .liability-history-toggle::after {
+    content: "−";
+}
+
+.liability-history-toggle span:last-child {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.liability-history-content {
+    margin-top: 12px;
+}
+
+.liability-balance {
+    display: grid;
+    justify-items: end;
+    gap: 5px;
+    text-align: right;
+}
+
+.liability-balance small {
+    color: var(--muted);
+}
+
+.liability-close-btn {
+    margin-top: 8px;
+    white-space: nowrap;
+}
+
+.liability-history {
+    width: 100%;
+}
+
+.liability-history-content,
+.liability-payment-list,
+.liability-payment-item {
+    width: 100%;
+}
+
+.liability-payment-item {
+    padding: 8px 10px;
+}
+
+@media (max-width: 600px) {
+    .liability-balance {
+        justify-items: start;
+        text-align: left;
+    }
+}

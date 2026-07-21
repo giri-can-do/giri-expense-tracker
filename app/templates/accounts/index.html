@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Accounts | Giri Expense Tracker{% endblock %}
+
+{% block content %}
+
+{% set eyebrow = "Money Sources" %}
+{% set heading = "Accounts" %}
+{% set description = "Manage the accounts that hold or owe your money." %}
+{% include "components/page_header.html" %}
+
+<section class="content-grid">
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Add Account</h2>
+        </div>
+
+        <form method="post">
+            <div class="form-group">
+                <label for="name">Account Name</label>
+                <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Main Bank Account"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="account_type">Account Type</label>
+
+                <select id="account_type" name="account_type" required>
+                    <option value="">Select account type</option>
+                    <option value="bank">Bank</option>
+                    <option value="cash">Cash</option>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="investment">Investment</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="opening_balance">Opening Balance</label>
+                <input
+                    id="opening_balance"
+                    name="opening_balance"
+                    type="number"
+                    step="0.01"
+                    value="0"
+                    required
+                >
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+                Add Account
+            </button>
+        </form>
+    </article>
+
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Your Accounts</h2>
+        </div>
+
+        {% if accounts %}
+            <div class="account-list">
+                {% for account in accounts %}
+                    <div class="account-item">
+                        <div>
+                            <strong>{{ account.name }}</strong>
+                            <span>{{ account.account_type | replace("_", " ") | title }}</span>
+                        </div>
+
+                        <strong>
+                            ¥{{ "{:,.0f}".format(account.opening_balance) }}
+                        </strong>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% set icon = "🏦" %}
+            {% set title = "No accounts yet" %}
+            {% set message = "Add your bank, cash, credit-card, or investment account." %}
+            {% include "components/empty_state.html" %}
+        {% endif %}
+    </article>
+</section>
+
+{% endblock %}

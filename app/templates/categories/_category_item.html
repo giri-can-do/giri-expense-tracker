@@ -1,0 +1,21 @@
+<div class="category-item {% if not category.is_active %}inactive{% endif %}">
+    <div>
+        <span class="category-icon">{{ category.icon }}</span>
+
+        <span>
+            <strong>{{ category.name }}</strong>
+            <small>
+                {{ "Active" if category.is_active else "Inactive" }}
+            </small>
+        </span>
+    </div>
+
+    <form
+        method="post"
+        action="{{ url_for('categories.toggle', category_id=category.id) }}"
+    >
+        <button class="btn btn-secondary" type="submit">
+            {{ "Deactivate" if category.is_active else "Activate" }}
+        </button>
+    </form>
+</div>

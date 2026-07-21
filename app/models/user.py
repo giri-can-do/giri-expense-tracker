@@ -44,3 +44,9 @@ class User(UserMixin, db.Model):
         back_populates="user",
         cascade="all, delete-orphan",
     )
+
+    liabilities = db.relationship(
+        "Liability",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
