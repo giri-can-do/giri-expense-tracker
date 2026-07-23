@@ -5,7 +5,7 @@ from decimal import Decimal
 from sqlalchemy import func
 
 from app import db
-from app.models import Account, Transaction
+from app.models import Account, Transaction, Category
 from typing import Optional
 
 
@@ -198,8 +198,20 @@ class DashboardService:
 
         total_debt = credit_card_debt + separate_liabilities
 
-        return {
+        expense_breakdown = (
+            DashboardService.get_monthly_expense_breakdown(
+                user_id
+            )
+        )
+
+        monthly_trend = DashboardService.get_monthly_trend(
+            user_id,
+            months=6,
+        )
+
+        dashboard_data = {
             "summary": summary,
+            "expense_breakdown": expense_breakdown,
             "recent_transactions":
                 TransactionService.get_recent_transactions(
                     user_id,
@@ -212,4 +224,111 @@ class DashboardService:
             "net_worth":
                 DashboardService.get_net_worth(user_id)
                 - separate_liabilities,
+            "monthly_trend": monthly_trend,
         }
+
+        from app.services.financial_insight_service import (
+            FinancialInsightService,
+        )
+
+        dashboard_data["insights"] = (
+            FinancialInsightService.get_insights(
+                dashboard_data
+            )
+        )
+
+        return dashboard_data
+    
+    @staticmethod
+    def get_monthly_expense_breakdown(
+        user_id: int,
+        target_date: Optional[date] = None,
+    ) -> list:
+        start_date, end_date = DashboardService.get_month_range(
+            target_date
+        )
+
+        results = (
+            db.session.query(
+                Category.name,
+                Category.icon,
+                func.sum(Transaction.amount).label("total"),
+            )
+            .join(
+                Transaction,
+                Transaction.category_id == Category.id,
+            )
+            .filter(
+                Transaction.user_id == user_id,
+                Transaction.transaction_type == "expense",
+                Transaction.transaction_date >= start_date,
+                Transaction.transaction_date <= end_date,
+            )
+            .group_by(
+                Category.id,
+                Category.name,
+                Category.icon,
+            )
+            .order_by(
+                func.sum(Transaction.amount).desc()
+            )
+            .all()
+        )
+
+        total_expenses = sum(
+            (Decimal(result.total or 0) for result in results),
+            Decimal("0"),
+        )
+
+        breakdown = []
+
+        for result in results:
+            amount = Decimal(result.total or 0)
+
+            percentage = (
+                amount / total_expenses * Decimal("100")
+                if total_expenses > 0
+                else Decimal("0")
+            )
+
+            breakdown.append(
+                {
+                    "category_name": result.name,
+                    "category_icon": result.icon,
+                    "amount": amount,
+                    "percentage": percentage,
+                }
+            )
+
+        return breakdown
+    
+    @staticmethod
+    def get_monthly_trend(user_id: int, months: int = 6) -> list:
+        today = date.today()
+        trend = []
+
+        for offset in range(months - 1, -1, -1):
+            month_number = today.month - offset
+            year = today.year
+
+            while month_number <= 0:
+                month_number += 12
+                year -= 1
+
+            target_date = date(year, month_number, 1)
+
+            summary = DashboardService.get_monthly_summary(
+                user_id,
+                target_date,
+            )
+
+            trend.append(
+                {
+                    "label": target_date.strftime("%b %Y"),
+                    "income": float(summary["income"]),
+                    "expenses": float(summary["expenses"]),
+                    "savings": float(summary["savings"]),
+                }
+            )
+
+        return trend

@@ -1,19 +1,23 @@
-const menuToggle = document.getElementById("menuToggle");
-const navLinks = document.getElementById("navLinks");
+const menuToggle = document.querySelector(".menu-toggle");
+const mainNavigation = document.querySelector(".main-nav");
 
-if (menuToggle && navLinks) {
+if (menuToggle && mainNavigation) {
     menuToggle.addEventListener("click", () => {
-        const isOpen = navLinks.classList.toggle("show");
+        const isOpen = mainNavigation.classList.toggle("is-open");
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+        );
 
         menuToggle.textContent = isOpen ? "✕" : "☰";
-        menuToggle.setAttribute("aria-expanded", String(isOpen));
     });
 
-    navLinks.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-            navLinks.classList.remove("show");
-            menuToggle.textContent = "☰";
+    mainNavigation.addEventListener("click", event => {
+        if (event.target.closest("a")) {
+            mainNavigation.classList.remove("is-open");
             menuToggle.setAttribute("aria-expanded", "false");
-        });
+            menuToggle.textContent = "☰";
+        }
     });
 }

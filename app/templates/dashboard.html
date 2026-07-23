@@ -46,11 +46,115 @@
     {% include "components/kpi_card.html" %}
 </section>
 
+{% if dashboard_data.insights %}
+<section class="insight-section">
+    <div class="panel-header">
+        <h2>💚 Giri Coach</h2>
+    </div>
+
+    <div class="insight-list">
+        {% for insight in dashboard_data.insights %}
+            <article class="insight-card insight-{{ insight.type }}">
+                <span class="insight-icon">
+                    {{ insight.icon }}
+                </span>
+
+                <div>
+                    <h3>{{ insight.title }}</h3>
+                    <p>{{ insight.message }}</p>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="analytics-grid">
+    <article class="panel chart-panel">
+        <div class="panel-header">
+            <div>
+                <h2>Income vs Expenses</h2>
+                <p class="muted-text">
+                    Your financial movement over the last six months.
+                </p>
+            </div>
+        </div>
+
+        <div class="chart-wrapper">
+            <canvas id="monthlyTrendChart"></canvas>
+        </div>
+    </article>
+
+    <article class="panel chart-panel">
+        <div class="panel-header">
+            <div>
+                <h2>Expenses by Category</h2>
+                <p class="muted-text">
+                    Where your money went this month.
+                </p>
+            </div>
+        </div>
+
+        <div class="chart-wrapper">
+            <canvas id="expenseCategoryChart"></canvas>
+        </div>
+    </article>
+</section>
+
+<section class="analytics-grid analytics-grid-full">
+    <article class="panel chart-panel">
+        <div class="panel-header">
+            <div>
+                <h2>Monthly Savings Trend</h2>
+                <p class="muted-text">
+                    Track whether your monthly cash flow is improving.
+                </p>
+            </div>
+        </div>
+
+        <div class="chart-wrapper">
+            <canvas id="savingsTrendChart"></canvas>
+        </div>
+    </article>
+</section>
+
+<section class="analytics-grid analytics-grid-full">
+    <article class="panel chart-panel">
+        <div class="panel-header">
+            <div>
+                <h2>Monthly Expense Trend</h2>
+                <p class="muted-text">
+                    See whether your monthly spending is increasing or improving.
+                </p>
+            </div>
+        </div>
+
+        <div
+            id="expenseTrendEmpty"
+            class="chart-empty-state"
+            hidden
+        >
+            <span>📉</span>
+            <strong>No expense history yet</strong>
+            <p>
+                Start recording expenses to discover your spending trend.
+            </p>
+        </div>
+
+        <div
+            id="expenseTrendWrapper"
+            class="chart-wrapper"
+        >
+            <canvas id="expenseTrendChart"></canvas>
+        </div>
+    </article>
+</section>
+
 <section class="content-grid">
     <article class="panel">
         <div class="panel-header">
             <h2>Recent Transactions</h2>
-            <a href="#">View All</a>
+            <a href="#">View</a>
         </div>
 
         <!-- <div class="empty-state">
@@ -173,4 +277,17 @@
         </div>
     </article>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script id="dashboard-data" type="application/json">
+{{ {
+    "monthlyTrend": dashboard_data.monthly_trend,
+    "expenseBreakdown": dashboard_data.expense_breakdown
+} | tojson }}
+</script>
+
+<script src="{{ url_for('static', filename='js/dashboard-charts.js') }}"></script>
 {% endblock %}

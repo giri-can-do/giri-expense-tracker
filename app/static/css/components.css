@@ -449,3 +449,50 @@
         text-align: left;
     }
 }
+
+.insight-section {
+    margin-bottom: 28px;
+}
+
+.insight-list {
+    display: grid;
+    gap: 12px;
+}
+
+.insight-card {
+    display: flex;
+    gap: 14px;
+    padding: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left-width: 4px;
+    border-radius: 12px;
+}
+
+.insight-card h3 {
+    margin-bottom: 4px;
+}
+
+.insight-card p {
+    color: var(--muted);
+}
+
+.insight-icon {
+    font-size: 1.5rem;
+}
+
+.insight-success {
+    border-left-color: var(--primary);
+}
+
+.insight-warning {
+    border-left-color: #facc15;
+}
+
+.insight-danger {
+    border-left-color: var(--danger);
+}
+
+.insight-info {
+    border-left-color: #38bdf8;
+}
