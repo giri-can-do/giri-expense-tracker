@@ -18,13 +18,17 @@ transactions_bp = Blueprint(
 @transactions_bp.route("/")
 @login_required
 def index():
+    search = request.args.get("q", "").strip()
+
     transactions = TransactionService.get_user_transactions(
-        current_user.id
+        user_id=current_user.id,
+        search=search,
     )
 
     return render_template(
         "transactions/index.html",
         transactions=transactions,
+        search=search,
     )
 
 

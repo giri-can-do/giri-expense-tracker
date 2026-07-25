@@ -2,8 +2,9 @@ from datetime import datetime
 from decimal import Decimal, InvalidOperation
 
 from app import db
-from app.models import Account, Category, Transaction
+from app.models import Account, Category, Transaction, Liability
 from app.services.liability_service import LiabilityService
+from sqlalchemy import or_
 
 
 class TransactionService:
@@ -14,10 +15,40 @@ class TransactionService:
     }
 
     @staticmethod
-    def get_user_transactions(user_id: int):
+    def get_user_transactions(
+        user_id: int,
+        search: str = "",
+    ):
+        query = Transaction.query.filter(
+            Transaction.user_id == user_id
+        )
+
+        search = search.strip()
+
+        if search:
+            search_pattern = f"%{search}%"
+
+            query = query.filter(
+                or_(
+                    Transaction.description.ilike(search_pattern),
+                    Transaction.note.ilike(search_pattern),
+
+                    Transaction.account.has(
+                        Account.name.ilike(search_pattern)
+                    ),
+
+                    Transaction.category.has(
+                        Category.name.ilike(search_pattern)
+                    ),
+
+                    Transaction.liability.has(
+                        Liability.name.ilike(search_pattern)
+                    ),
+                )
+            )
+
         return (
-            Transaction.query
-            .filter_by(user_id=user_id)
+            query
             .order_by(
                 Transaction.transaction_date.desc(),
                 Transaction.id.desc(),

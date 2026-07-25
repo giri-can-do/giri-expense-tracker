@@ -8,7 +8,7 @@
 }
 
 .btn {
-    padding: 11px 18px;
+    padding: 24px 18px;
     border: 0;
     border-radius: 9px;
     font-weight: 700;
@@ -22,6 +22,20 @@
 
 .btn-primary:hover {
     background: var(--primary-hover);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+
+    border: 1px solid var(--border);
+
+    transition: all .2s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,.05);
+    color: var(--text-primary);
 }
 
 .panel,
@@ -495,4 +509,118 @@
 
 .insight-info {
     border-left-color: #38bdf8;
+}
+
+.transaction-filter-panel {
+    margin-bottom: 24px;
+    padding: 20px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+.filter-panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.filter-panel-heading h2 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.filter-result-count {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.transaction-search-row {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+}
+
+.transaction-search-field {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.transaction-search-icon {
+    position: absolute;
+    top: 62%;
+    left: 16px;
+    transform: translateY(-50%);
+
+    pointer-events: none;
+}
+
+.transaction-search-field input {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px 12px 48px;
+
+    color: var(--text);
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.transaction-search-field input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+}
+
+@media (max-width: 600px) {
+    .filter-panel-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .transaction-search-row {
+        flex-direction: column;
+    }
+
+    .transaction-search-row .btn {
+        width: 100%;
+    }
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+
+    color: var(--muted);
+    font-weight: 600;
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.back-link:hover {
+    color: var(--primary);
+    transform: translateX(-2px);
+}
+
+.transaction-item {
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.transaction-item:hover {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(148, 163, 184, 0.35);
+    transform: translateY(-1px);
 }

@@ -9,6 +9,13 @@
 {% set description = "Record income or expenses and keep your financial dashboard accurate." %}
 {% include "components/page_header.html" %}
 
+<a
+    href="{{ url_for('transactions.index') }}"
+    class="back-link"
+>
+    ← Back to Transactions
+</a>
+
 <article class="panel transaction-form-panel">
     <form method="post">
         <div class="form-grid">

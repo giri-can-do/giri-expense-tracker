@@ -11,6 +11,57 @@
 {% set action_url = url_for('transactions.create') %}
 {% include "components/page_header.html" %}
 
+<form
+    class="transaction-filter-panel"
+    method="get"
+    action="{{ url_for('transactions.index') }}"
+>
+    <div class="filter-panel-heading">
+        <h2>Filter Transactions</h2>
+
+        {% if search %}
+            <span class="filter-result-count">
+                {{ transactions | length }}
+                result{% if transactions | length != 1 %}s{% endif %}
+            </span>
+        {% endif %}
+    </div>
+
+    <div class="transaction-search-row">
+        <div class="transaction-search-field">
+            <label for="transactionSearch" class="sr-only">
+                Search transactions
+            </label>
+
+            <span class="transaction-search-icon" aria-hidden="true">
+                🔍
+            </span>
+
+            <input
+                id="transactionSearch"
+                name="q"
+                type="search"
+                value="{{ search }}"
+                placeholder="Search by description, account, category or liability"
+                autocomplete="off"
+            >
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            Apply
+        </button>
+
+        {% if search %}
+            <a
+                class="btn btn-secondary"
+                href="{{ url_for('transactions.index') }}"
+            >
+                Clear
+            </a>
+        {% endif %}
+    </div>
+</form>
+
 <article class="panel">
     {% if transactions %}
         <div class="transaction-list">
@@ -70,9 +121,16 @@
             {% endfor %}
         </div>
     {% else %}
-        {% set icon = "🧾" %}
-        {% set title = "No transactions yet" %}
-        {% set message = "Add your first income or expense transaction." %}
+        {% if search %}
+            {% set icon = "🔍" %}
+            {% set title = "No matching transactions" %}
+            {% set message = 'No transactions matched "' ~ search ~ '". Try another keyword or clear the search.' %}
+        {% else %}
+            {% set icon = "🧾" %}
+            {% set title = "No transactions yet" %}
+            {% set message = "Add your first income or expense transaction." %}
+        {% endif %}
+
         {% include "components/empty_state.html" %}
     {% endif %}
 </article>
