@@ -624,3 +624,31 @@
     border-color: rgba(148, 163, 184, 0.35);
     transform: translateY(-1px);
 }
+
+.transaction-filter-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.transaction-filter-field {
+    display: grid;
+    gap: 8px;
+}
+
+.transaction-filter-field label {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.transaction-filter-field select {
+    width: 100%;
+    min-height: 48px;
+}
+
+@media (max-width: 768px) {
+    .transaction-filter-controls {
+        grid-template-columns: 1fr;
+    }
+}

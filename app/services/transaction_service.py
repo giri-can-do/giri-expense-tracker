@@ -18,12 +18,14 @@ class TransactionService:
     def get_user_transactions(
         user_id: int,
         search: str = "",
+        transaction_type: str = "",
     ):
         query = Transaction.query.filter(
             Transaction.user_id == user_id
         )
 
         search = search.strip()
+        transaction_type = transaction_type.strip().lower()
 
         if search:
             search_pattern = f"%{search}%"
@@ -32,19 +34,21 @@ class TransactionService:
                 or_(
                     Transaction.description.ilike(search_pattern),
                     Transaction.note.ilike(search_pattern),
-
                     Transaction.account.has(
                         Account.name.ilike(search_pattern)
                     ),
-
                     Transaction.category.has(
                         Category.name.ilike(search_pattern)
                     ),
-
                     Transaction.liability.has(
                         Liability.name.ilike(search_pattern)
                     ),
                 )
+            )
+
+        if transaction_type in TransactionService.VALID_TYPES:
+            query = query.filter(
+                Transaction.transaction_type == transaction_type
             )
 
         return (

@@ -11,6 +11,7 @@
 {% set action_url = url_for('transactions.create') %}
 {% include "components/page_header.html" %}
 
+<!-- Search Field  -->
 <form
     class="transaction-filter-panel"
     method="get"
@@ -51,7 +52,7 @@
             Apply
         </button>
 
-        {% if search %}
+        {% if search or selected_type %}
             <a
                 class="btn btn-secondary"
                 href="{{ url_for('transactions.index') }}"
@@ -59,6 +60,45 @@
                 Clear
             </a>
         {% endif %}
+    </div>
+
+    <div class="transaction-filter-controls">
+        <!-- Transaction Type -->
+        <div class="transaction-filter-field">
+            <label for="transactionType">
+                Transaction Type
+            </label>
+
+            <select
+                id="transactionType"
+                name="type"
+            >
+                <option value="">
+                    All Types
+                </option>
+
+                <option
+                    value="income"
+                    {% if selected_type == "income" %}selected{% endif %}
+                >
+                    Income
+                </option>
+
+                <option
+                    value="expense"
+                    {% if selected_type == "expense" %}selected{% endif %}
+                >
+                    Expense
+                </option>
+
+                <option
+                    value="debt_payment"
+                    {% if selected_type == "debt_payment" %}selected{% endif %}
+                >
+                    Debt Payment
+                </option>
+            </select>
+        </div>
     </div>
 </form>
 
@@ -121,10 +161,10 @@
             {% endfor %}
         </div>
     {% else %}
-        {% if search %}
+        {% if search or selected_type %}
             {% set icon = "🔍" %}
             {% set title = "No matching transactions" %}
-            {% set message = 'No transactions matched "' ~ search ~ '". Try another keyword or clear the search.' %}
+            {% set message = "No transactions matched the selected filters. Try changing or clearing them." %}
         {% else %}
             {% set icon = "🧾" %}
             {% set title = "No transactions yet" %}

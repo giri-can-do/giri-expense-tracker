@@ -20,15 +20,22 @@ transactions_bp = Blueprint(
 def index():
     search = request.args.get("q", "").strip()
 
+    transaction_type = request.args.get(
+        "type",
+        "",
+    ).strip().lower()
+
     transactions = TransactionService.get_user_transactions(
         user_id=current_user.id,
         search=search,
+        transaction_type=transaction_type,
     )
 
     return render_template(
         "transactions/index.html",
         transactions=transactions,
         search=search,
+        selected_type=transaction_type,
     )
 
 
