@@ -5,6 +5,7 @@ from app import db
 from app.models import Account, Category, Transaction, Liability
 from app.services.liability_service import LiabilityService
 from sqlalchemy import or_
+from typing import Optional
 
 
 class TransactionService:
@@ -19,6 +20,7 @@ class TransactionService:
         user_id: int,
         search: str = "",
         transaction_type: str = "",
+        category_id: Optional[int] = None,
     ):
         query = Transaction.query.filter(
             Transaction.user_id == user_id
@@ -49,6 +51,12 @@ class TransactionService:
         if transaction_type in TransactionService.VALID_TYPES:
             query = query.filter(
                 Transaction.transaction_type == transaction_type
+            )
+
+        # Categories apply only to income and expenses.
+        if category_id and transaction_type != "debt_payment":
+            query = query.filter(
+                Transaction.category_id == category_id
             )
 
         return (

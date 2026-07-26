@@ -1,47 +1,89 @@
-const typeSelect = document.getElementById("transaction_type");
-const categorySelect = document.getElementById("category_id");
-const categoryGroup = document.getElementById("categoryGroup");
+const typeSelect =
+    document.getElementById("transaction_type");
 
-const liabilitySelect = document.getElementById("liability_id");
-const liabilityGroup = document.getElementById("liabilityGroup");
+const categorySelect =
+    document.getElementById("category_id");
 
-if (typeSelect && categorySelect) {
+const categoryGroup =
+    document.getElementById("categoryGroup");
+
+const liabilitySelect =
+    document.getElementById("liability_id");
+
+const liabilityGroup =
+    document.getElementById("liabilityGroup");
+
+if (
+    typeSelect &&
+    categorySelect &&
+    categoryGroup &&
+    liabilitySelect &&
+    liabilityGroup
+) {
     const originalCategoryOptions = Array.from(
-        categorySelect.querySelectorAll("option[data-type]")
+        categorySelect.querySelectorAll(
+            "option[data-category-type]"
+        )
     );
 
     function updateTransactionFields() {
         const selectedType = typeSelect.value;
-        const isDebtPayment = selectedType === "debt_payment";
 
-        categoryGroup.classList.toggle("hidden", isDebtPayment);
-        liabilityGroup.classList.toggle("hidden", !isDebtPayment);
+        const isDebtPayment =
+            selectedType === "debt_payment";
 
-        categorySelect.required = !isDebtPayment && Boolean(selectedType);
+        categoryGroup.classList.toggle(
+            "hidden",
+            isDebtPayment
+        );
+
+        liabilityGroup.classList.toggle(
+            "hidden",
+            !isDebtPayment
+        );
+
+        categorySelect.required =
+            Boolean(selectedType) && !isDebtPayment;
+
         liabilitySelect.required = isDebtPayment;
 
         if (isDebtPayment) {
             categorySelect.value = "";
             categorySelect.disabled = true;
+
             liabilitySelect.disabled = false;
             return;
         }
 
         liabilitySelect.value = "";
         liabilitySelect.disabled = true;
+
         categorySelect.disabled = !selectedType;
 
         categorySelect.innerHTML =
             '<option value="">Select category</option>';
 
+        if (!selectedType) {
+            return;
+        }
+
         originalCategoryOptions
-            .filter((option) => option.dataset.type === selectedType)
-            .forEach((option) => {
-                categorySelect.appendChild(option.cloneNode(true));
+            .filter(
+                option =>
+                    option.dataset.categoryType ===
+                    selectedType
+            )
+            .forEach(option => {
+                categorySelect.appendChild(
+                    option.cloneNode(true)
+                );
             });
     }
 
-    typeSelect.addEventListener("change", updateTransactionFields);
+    typeSelect.addEventListener(
+        "change",
+        updateTransactionFields
+    );
 
     updateTransactionFields();
 }

@@ -69,7 +69,7 @@
                     {% for category in categories %}
                         <option
                             value="{{ category.id }}"
-                            data-type="{{ category.category_type }}"
+                            data-category-type="{{ category.category_type }}"
                         >
                             {{ category.icon }} {{ category.name }}
                         </option>

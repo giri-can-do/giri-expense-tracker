@@ -52,7 +52,7 @@
             Apply
         </button>
 
-        {% if search or selected_type %}
+        {% if search or selected_type or selected_category_id %}
             <a
                 class="btn btn-secondary"
                 href="{{ url_for('transactions.index') }}"
@@ -97,6 +97,35 @@
                 >
                     Debt Payment
                 </option>
+            </select>
+        </div>
+   
+
+        <div class="transaction-filter-field">
+            <label for="transactionCategory">
+                Category
+            </label>
+
+            <select
+                id="transactionCategory"
+                name="category_id"
+                {% if selected_type == "debt_payment" %}disabled{% endif %}
+            >
+                <option value="">
+                    All Categories
+                </option>
+
+                {% for category in categories %}
+                    <option
+                        value="{{ category.id }}"
+                        data-category-type="{{ category.category_type }}"
+                        {% if selected_category_id == category.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ category.icon }} {{ category.name }}
+                    </option>
+                {% endfor %}
             </select>
         </div>
     </div>
@@ -175,4 +204,13 @@
     {% endif %}
 </article>
 
+{% endblock %}
+
+{% block scripts %}
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/transaction-filters.js'
+    ) }}"
+></script>
 {% endblock %}

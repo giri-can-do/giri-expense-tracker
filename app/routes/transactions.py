@@ -20,22 +20,39 @@ transactions_bp = Blueprint(
 def index():
     search = request.args.get("q", "").strip()
 
-    transaction_type = request.args.get(
+    selected_type = request.args.get(
         "type",
         "",
     ).strip().lower()
 
+    selected_category_id = request.args.get(
+        "category_id",
+        type=int,
+    )
+
+    # Debt payments do not use categories.
+    if selected_type == "debt_payment":
+        selected_category_id = None
+
     transactions = TransactionService.get_user_transactions(
         user_id=current_user.id,
         search=search,
-        transaction_type=transaction_type,
+        transaction_type=selected_type,
+        category_id=selected_category_id,
+    )
+
+    categories = CategoryService.get_user_categories(
+        current_user.id,
+        active_only=False,
     )
 
     return render_template(
         "transactions/index.html",
         transactions=transactions,
+        categories=categories,
         search=search,
-        selected_type=transaction_type,
+        selected_type=selected_type,
+        selected_category_id=selected_category_id,
     )
 
 
