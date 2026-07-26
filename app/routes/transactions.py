@@ -30,7 +30,11 @@ def index():
         type=int,
     )
 
-    # Debt payments do not use categories.
+    selected_account_id = request.args.get(
+        "account_id",
+        type=int,
+    )
+
     if selected_type == "debt_payment":
         selected_category_id = None
 
@@ -39,6 +43,7 @@ def index():
         search=search,
         transaction_type=selected_type,
         category_id=selected_category_id,
+        account_id=selected_account_id,
     )
 
     categories = CategoryService.get_user_categories(
@@ -46,13 +51,19 @@ def index():
         active_only=False,
     )
 
+    accounts = AccountService.get_user_accounts(
+        current_user.id,
+    )
+
     return render_template(
         "transactions/index.html",
         transactions=transactions,
         categories=categories,
+        accounts=accounts,
         search=search,
         selected_type=selected_type,
         selected_category_id=selected_category_id,
+        selected_account_id=selected_account_id,
     )
 
 

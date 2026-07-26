@@ -25,12 +25,13 @@
 }
 
 .btn-secondary {
-    background: transparent;
+    background: #aaa0be29;
     color: var(--text-secondary);
 
     border: 1px solid var(--border);
 
     transition: all .2s ease;
+    text-align: center;
 }
 
 .btn-secondary:hover {
@@ -664,6 +665,37 @@
 }
 
 @media (max-width: 900px) {
+    .transaction-filter-controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .transaction-search-field {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .transaction-filter-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .transaction-search-field {
+        grid-column: auto;
+    }
+}
+
+.transaction-filter-controls {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 2fr)
+        minmax(170px, 1fr)
+        minmax(210px, 1fr)
+        minmax(190px, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 1050px) {
     .transaction-filter-controls {
         grid-template-columns: 1fr 1fr;
     }

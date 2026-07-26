@@ -52,7 +52,12 @@
             Apply
         </button>
 
-        {% if search or selected_type or selected_category_id %}
+        {% if
+            search
+            or selected_type
+            or selected_category_id
+            or selected_account_id
+        %}
             <a
                 class="btn btn-secondary"
                 href="{{ url_for('transactions.index') }}"
@@ -124,6 +129,32 @@
                         {% endif %}
                     >
                         {{ category.icon }} {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="transaction-filter-field">
+            <label for="transactionAccount">
+                Account
+            </label>
+
+            <select
+                id="transactionAccount"
+                name="account_id"
+            >
+                <option value="">
+                    All Accounts
+                </option>
+
+                {% for account in accounts %}
+                    <option
+                        value="{{ account.id }}"
+                        {% if selected_account_id == account.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ account.name }}
                     </option>
                 {% endfor %}
             </select>

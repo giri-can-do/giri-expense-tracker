@@ -21,6 +21,7 @@ class TransactionService:
         search: str = "",
         transaction_type: str = "",
         category_id: Optional[int] = None,
+        account_id: Optional[int] = None,
     ):
         query = Transaction.query.filter(
             Transaction.user_id == user_id
@@ -52,11 +53,15 @@ class TransactionService:
             query = query.filter(
                 Transaction.transaction_type == transaction_type
             )
-
-        # Categories apply only to income and expenses.
+        
         if category_id and transaction_type != "debt_payment":
             query = query.filter(
                 Transaction.category_id == category_id
+            )
+
+        if account_id:
+            query = query.filter(
+                Transaction.account_id == account_id
             )
 
         return (
