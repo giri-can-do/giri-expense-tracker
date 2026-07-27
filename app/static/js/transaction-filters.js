@@ -94,3 +94,43 @@ if (transactionTypeFilter && categoryFilter) {
     // Preserve a submitted category after page refresh.
     updateCategoryOptions(true);
 }
+
+const startDate =
+    document.getElementById("startDate");
+
+const endDate =
+    document.getElementById("endDate");
+
+if (startDate && endDate) {
+
+    const validateDates = () => {
+
+        if (
+            startDate.value &&
+            endDate.value &&
+            startDate.value > endDate.value
+        ) {
+
+            endDate.setCustomValidity(
+                "End Date must be on or after Start Date."
+            );
+
+        } else {
+
+            endDate.setCustomValidity("");
+
+        }
+
+    };
+
+    startDate.addEventListener(
+        "change",
+        validateDates
+    );
+
+    endDate.addEventListener(
+        "change",
+        validateDates
+    );
+
+}

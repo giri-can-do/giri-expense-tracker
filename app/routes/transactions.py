@@ -1,4 +1,5 @@
 from datetime import date
+from datetime import datetime
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
@@ -38,12 +39,27 @@ def index():
     if selected_type == "debt_payment":
         selected_category_id = None
 
+    start_date = request.args.get("start_date", "")
+    end_date = request.args.get("end_date", "")
+
+    selected_start_date = (
+        datetime.strptime(start_date, "%Y-%m-%d").date()
+        if start_date else None
+    )
+
+    selected_end_date = (
+        datetime.strptime(end_date, "%Y-%m-%d").date()
+        if end_date else None
+    )
+
     transactions = TransactionService.get_user_transactions(
         user_id=current_user.id,
         search=search,
         transaction_type=selected_type,
         category_id=selected_category_id,
         account_id=selected_account_id,
+        start_date=selected_start_date,
+        end_date=selected_end_date,
     )
 
     categories = CategoryService.get_user_categories(
@@ -64,6 +80,8 @@ def index():
         selected_type=selected_type,
         selected_category_id=selected_category_id,
         selected_account_id=selected_account_id,
+        selected_start_date=selected_start_date,
+        selected_end_date=selected_end_date,
     )
 
 

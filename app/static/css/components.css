@@ -539,11 +539,7 @@
     font-size: 0.9rem;
 }
 
-.transaction-search-row {
-    display: flex;
-    align-items: stretch;
-    gap: 12px;
-}
+
 
 .transaction-search-field {
     position: relative;
@@ -583,14 +579,6 @@
         flex-direction: column;
         gap: 4px;
     }
-
-    .transaction-search-row {
-        flex-direction: column;
-    }
-
-    .transaction-search-row .btn {
-        width: 100%;
-    }
 }
 
 .back-link {
@@ -626,13 +614,6 @@
     transform: translateY(-1px);
 }
 
-.transaction-filter-controls {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
 .transaction-filter-field {
     display: grid;
     gap: 8px;
@@ -648,64 +629,29 @@
     min-height: 48px;
 }
 
+.transaction-filter-controls {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 2fr)
+        repeat(5, minmax(160px, 1fr));
+
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 1200px) {
+    .transaction-filter-controls {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .transaction-search-field {
+        grid-column: 1 / -1;
+    }
+}
+
 @media (max-width: 768px) {
-    .transaction-filter-controls {
-        grid-template-columns: 1fr;
-    }
-}
-
-.transaction-filter-controls {
-    display: grid;
-    grid-template-columns:
-        minmax(0, 2fr)
-        minmax(190px, 1fr)
-        minmax(220px, 1fr);
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-@media (max-width: 900px) {
-    .transaction-filter-controls {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .transaction-search-field {
-        grid-column: 1 / -1;
-    }
-}
-
-@media (max-width: 600px) {
-    .transaction-filter-controls {
-        grid-template-columns: 1fr;
-    }
-
-    .transaction-search-field {
-        grid-column: auto;
-    }
-}
-
-.transaction-filter-controls {
-    display: grid;
-    grid-template-columns:
-        minmax(0, 2fr)
-        minmax(170px, 1fr)
-        minmax(210px, 1fr)
-        minmax(190px, 1fr);
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-@media (max-width: 1050px) {
-    .transaction-filter-controls {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .transaction-search-field {
-        grid-column: 1 / -1;
-    }
-}
-
-@media (max-width: 600px) {
     .transaction-filter-controls {
         grid-template-columns: 1fr;
     }

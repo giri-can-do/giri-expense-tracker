@@ -30,11 +30,14 @@
 
     <div class="transaction-search-row">
         <div class="transaction-search-field">
-            <label for="transactionSearch" class="sr-only">
+            <label for="transactionSearch">
                 Search transactions
             </label>
 
-            <span class="transaction-search-icon" aria-hidden="true">
+            <span
+                class="transaction-search-icon"
+                aria-hidden="true"
+            >
                 🔍
             </span>
 
@@ -48,23 +51,27 @@
             >
         </div>
 
-        <button class="btn btn-primary" type="submit">
-            Apply
-        </button>
+        <div class="transaction-filter-actions">
+            <button class="btn btn-primary" type="submit">
+                Apply
+            </button>
 
-        {% if
-            search
-            or selected_type
-            or selected_category_id
-            or selected_account_id
-        %}
-            <a
-                class="btn btn-secondary"
-                href="{{ url_for('transactions.index') }}"
-            >
-                Clear
-            </a>
-        {% endif %}
+            {% if
+                search
+                or selected_type
+                or selected_category_id
+                or selected_account_id
+                or selected_start_date
+                or selected_end_date
+            %}
+                <a
+                    class="btn btn-secondary"
+                    href="{{ url_for('transactions.index') }}"
+                >
+                    Clear
+                </a>
+            {% endif %}
+        </div>
     </div>
 
     <div class="transaction-filter-controls">
@@ -158,6 +165,32 @@
                     </option>
                 {% endfor %}
             </select>
+        </div>
+
+        <div class="transaction-filter-field">
+            <label for="startDate">
+                Start Date
+            </label>
+
+            <input
+                type="date"
+                id="startDate"
+                name="start_date"
+                value="{{ selected_start_date or '' }}"
+            >
+        </div>
+
+        <div class="transaction-filter-field">
+            <label for="endDate">
+                End Date
+            </label>
+
+            <input
+                type="date"
+                id="endDate"
+                name="end_date"
+                value="{{ selected_end_date or '' }}"
+            >
         </div>
     </div>
 </form>

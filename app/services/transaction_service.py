@@ -6,6 +6,7 @@ from app.models import Account, Category, Transaction, Liability
 from app.services.liability_service import LiabilityService
 from sqlalchemy import or_
 from typing import Optional
+from datetime import date
 
 
 class TransactionService:
@@ -22,6 +23,8 @@ class TransactionService:
         transaction_type: str = "",
         category_id: Optional[int] = None,
         account_id: Optional[int] = None,
+        start_date: Optional[date] = None,
+        end_date: Optional[date] = None,
     ):
         query = Transaction.query.filter(
             Transaction.user_id == user_id
@@ -62,6 +65,16 @@ class TransactionService:
         if account_id:
             query = query.filter(
                 Transaction.account_id == account_id
+            )
+
+        if start_date:
+            query = query.filter(
+                Transaction.transaction_date >= start_date
+            )
+
+        if end_date:
+            query = query.filter(
+                Transaction.transaction_date <= end_date
             )
 
         return (
