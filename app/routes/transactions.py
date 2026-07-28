@@ -52,6 +52,11 @@ def index():
         if end_date else None
     )
 
+    selected_sort = request.args.get(
+        "sort",
+        "newest",
+    ).strip()
+
     transactions = TransactionService.get_user_transactions(
         user_id=current_user.id,
         search=search,
@@ -60,6 +65,7 @@ def index():
         account_id=selected_account_id,
         start_date=selected_start_date,
         end_date=selected_end_date,
+        sort_by=selected_sort,
     )
 
     categories = CategoryService.get_user_categories(
@@ -70,7 +76,7 @@ def index():
     accounts = AccountService.get_user_accounts(
         current_user.id,
     )
-
+    
     return render_template(
         "transactions/index.html",
         transactions=transactions,
@@ -82,6 +88,7 @@ def index():
         selected_account_id=selected_account_id,
         selected_start_date=selected_start_date,
         selected_end_date=selected_end_date,
+        selected_sort=selected_sort,
     )
 
 

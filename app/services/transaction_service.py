@@ -25,6 +25,7 @@ class TransactionService:
         account_id: Optional[int] = None,
         start_date: Optional[date] = None,
         end_date: Optional[date] = None,
+        sort_by: str = "newest",
     ):
         query = Transaction.query.filter(
             Transaction.user_id == user_id
@@ -77,14 +78,41 @@ class TransactionService:
                 Transaction.transaction_date <= end_date
             )
 
-        return (
-            query
-            .order_by(
+        sort_options = {
+            "newest": (
                 Transaction.transaction_date.desc(),
                 Transaction.id.desc(),
-            )
-            .all()
+            ),
+            "oldest": (
+                Transaction.transaction_date.asc(),
+                Transaction.id.asc(),
+            ),
+            "amount_desc": (
+                Transaction.amount.desc(),
+                Transaction.transaction_date.desc(),
+                Transaction.id.desc(),
+            ),
+            "amount_asc": (
+                Transaction.amount.asc(),
+                Transaction.transaction_date.desc(),
+                Transaction.id.desc(),
+            ),
+            "description_asc": (
+                Transaction.description.asc(),
+                Transaction.transaction_date.desc(),
+            ),
+            "description_desc": (
+                Transaction.description.desc(),
+                Transaction.transaction_date.desc(),
+            ),
+        }
+
+        order_by = sort_options.get(
+            sort_by,
+            sort_options["newest"],
         )
+
+        return query.order_by(*order_by).all()
 
     @staticmethod
     def get_recent_transactions(user_id: int, limit: int = 5):

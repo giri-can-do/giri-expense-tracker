@@ -63,6 +63,7 @@
                 or selected_account_id
                 or selected_start_date
                 or selected_end_date
+                or selected_sort != "newest"
             %}
                 <a
                     class="btn btn-secondary"
@@ -191,6 +192,60 @@
                 name="end_date"
                 value="{{ selected_end_date or '' }}"
             >
+        </div>
+
+        <!-- Sorting -->
+         <div class="transaction-filter-field">
+            <label for="transactionSort">
+                Sort By
+            </label>
+
+            <select
+                id="transactionSort"
+                name="sort"
+            >
+                <option
+                    value="newest"
+                    {% if selected_sort == "newest" %}selected{% endif %}
+                >
+                    Newest First
+                </option>
+
+                <option
+                    value="oldest"
+                    {% if selected_sort == "oldest" %}selected{% endif %}
+                >
+                    Oldest First
+                </option>
+
+                <option
+                    value="amount_desc"
+                    {% if selected_sort == "amount_desc" %}selected{% endif %}
+                >
+                    Amount: High to Low
+                </option>
+
+                <option
+                    value="amount_asc"
+                    {% if selected_sort == "amount_asc" %}selected{% endif %}
+                >
+                    Amount: Low to High
+                </option>
+
+                <option
+                    value="description_asc"
+                    {% if selected_sort == "description_asc" %}selected{% endif %}
+                >
+                    Description: A to Z
+                </option>
+
+                <option
+                    value="description_desc"
+                    {% if selected_sort == "description_desc" %}selected{% endif %}
+                >
+                    Description: Z to A
+                </option>
+            </select>
         </div>
     </div>
 </form>

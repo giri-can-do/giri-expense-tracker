@@ -631,19 +631,14 @@
 
 .transaction-filter-controls {
     display: grid;
-
-    grid-template-columns:
-        minmax(0, 2fr)
-        repeat(5, minmax(160px, 1fr));
-
+    grid-template-columns:repeat(6,minmax(150px,1fr));
     gap: 16px;
     margin-bottom: 16px;
 }
 
 @media (max-width: 1200px) {
     .transaction-filter-controls {
-        grid-template-columns:
-            repeat(2, 1fr);
+        grid-template-columns:repeat(3,1fr);
     }
 
     .transaction-search-field {
@@ -653,7 +648,7 @@
 
 @media (max-width: 768px) {
     .transaction-filter-controls {
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
     }
 
     .transaction-search-field {
