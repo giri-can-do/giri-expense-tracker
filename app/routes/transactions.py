@@ -57,7 +57,16 @@ def index():
         "newest",
     ).strip()
 
-    transactions = TransactionService.get_user_transactions(
+    page = request.args.get(
+        "page",
+        1,
+        type=int,
+    )
+
+    if page < 1:
+        page = 1
+
+    pagination = TransactionService.get_user_transactions(
         user_id=current_user.id,
         search=search,
         transaction_type=selected_type,
@@ -66,6 +75,8 @@ def index():
         start_date=selected_start_date,
         end_date=selected_end_date,
         sort_by=selected_sort,
+        page=page,
+        per_page=10,
     )
 
     categories = CategoryService.get_user_categories(
@@ -76,18 +87,28 @@ def index():
     accounts = AccountService.get_user_accounts(
         current_user.id,
     )
+
+    pagination_args = request.args.to_dict()
+    pagination_args.pop("page", None)
     
     return render_template(
         "transactions/index.html",
-        transactions=transactions,
+
+        # The existing template can continue looping normally.
+        transactions=pagination.items,
+
+        pagination=pagination,
+        pagination_args=pagination_args,
+
         categories=categories,
         accounts=accounts,
+
         search=search,
         selected_type=selected_type,
         selected_category_id=selected_category_id,
         selected_account_id=selected_account_id,
-        selected_start_date=selected_start_date,
-        selected_end_date=selected_end_date,
+        selected_start_date=start_date,
+        selected_end_date=end_date,
         selected_sort=selected_sort,
     )
 

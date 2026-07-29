@@ -26,6 +26,8 @@ class TransactionService:
         start_date: Optional[date] = None,
         end_date: Optional[date] = None,
         sort_by: str = "newest",
+        page: int = 1,
+        per_page: int = 10,
     ):
         query = Transaction.query.filter(
             Transaction.user_id == user_id
@@ -34,6 +36,7 @@ class TransactionService:
         search = search.strip()
         transaction_type = transaction_type.strip().lower()
 
+        # Existing search logic
         if search:
             search_pattern = f"%{search}%"
 
@@ -53,11 +56,12 @@ class TransactionService:
                 )
             )
 
+        # Existing filters
         if transaction_type in TransactionService.VALID_TYPES:
             query = query.filter(
                 Transaction.transaction_type == transaction_type
             )
-        
+
         if category_id and transaction_type != "debt_payment":
             query = query.filter(
                 Transaction.category_id == category_id
@@ -78,6 +82,7 @@ class TransactionService:
                 Transaction.transaction_date <= end_date
             )
 
+        # Existing sorting
         sort_options = {
             "newest": (
                 Transaction.transaction_date.desc(),
@@ -100,10 +105,12 @@ class TransactionService:
             "description_asc": (
                 Transaction.description.asc(),
                 Transaction.transaction_date.desc(),
+                Transaction.id.desc(),
             ),
             "description_desc": (
                 Transaction.description.desc(),
                 Transaction.transaction_date.desc(),
+                Transaction.id.desc(),
             ),
         }
 
@@ -112,7 +119,13 @@ class TransactionService:
             sort_options["newest"],
         )
 
-        return query.order_by(*order_by).all()
+        query = query.order_by(*order_by)
+
+        return query.paginate(
+            page=page,
+            per_page=per_page,
+            error_out=False,
+        )
 
     @staticmethod
     def get_recent_transactions(user_id: int, limit: int = 5):
