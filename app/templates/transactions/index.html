@@ -14,6 +14,7 @@
 <!-- Search Field  -->
 <form
     class="transaction-filter-panel"
+    id="transactionFilterForm"
     method="get"
     action="{{ url_for('transactions.index') }}"
 >
@@ -166,6 +167,76 @@
                     </option>
                 {% endfor %}
             </select>
+        </div>
+
+        <div class="quick-date-range-group">
+            <span class="quick-date-range-label">Quick Date Range</span>
+
+            <div class="quick-date-range-buttons">
+                <button
+                    type="button"
+                    class="quick-date-btn"
+                    data-range="today"
+                >
+                    Today
+                </button>
+
+                <button
+                    type="button"
+                    class="quick-date-btn"
+                    data-range="yesterday"
+                >
+                    Yesterday
+                </button>
+
+                <button
+                    type="button"
+                    class="quick-date-btn"
+                    data-range="this_week"
+                >
+                    This Week
+                </button>
+
+                <button
+                    type="button"
+                    class="quick-date-btn"
+                    data-range="last_week"
+                >
+                    Last Week
+                </button>
+
+                <button
+                    type="button"
+                    class="quick-date-btn"
+                    data-range="this_month"
+                >
+                    This Month
+                </button>
+
+                <button
+                    type="button"
+                    class="quick-date-btn"
+                    data-range="last_month"
+                >
+                    Last Month
+                </button>
+
+                <button
+                    type="button"
+                    class="quick-date-btn"
+                    data-range="this_year"
+                >
+                    This Year
+                </button>
+
+                <button
+                    type="button"
+                    class="quick-date-btn"
+                    data-range="last_year"
+                >
+                    Last Year
+                </button>
+            </div>
         </div>
 
         <div class="transaction-filter-field">
@@ -431,6 +502,13 @@
     src="{{ url_for(
         'static',
         filename='js/transaction-filters.js'
+    ) }}"
+></script>
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/transactions.js'
     ) }}"
 ></script>
 {% endblock %}
