@@ -20,6 +20,10 @@
     background: var(--primary);
 }
 
+.liability-form-panel .btn-primary {
+    min-width: 140px;
+}
+
 .btn-primary:hover {
     background: var(--primary-hover);
 }
@@ -352,9 +356,10 @@
 }
 
 .liability-history {
-    margin-top: 18px;
+    margin-top: 12px;
     padding-top: 16px;
     border-top: 1px solid var(--border);
+    width: 100%;
 }
 
 .liability-history-header {
@@ -386,12 +391,6 @@
 .liability-payment-item small {
     display: block;
     color: var(--muted);
-}
-
-.liability-history {
-    margin-top: 18px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
 }
 
 .liability-history-toggle {
@@ -442,10 +441,6 @@
 .liability-close-btn {
     margin-top: 8px;
     white-space: nowrap;
-}
-
-.liability-history {
-    width: 100%;
 }
 
 .liability-history-content,

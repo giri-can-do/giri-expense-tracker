@@ -71,7 +71,7 @@
     </div>
 </article>
 
-<section class="content-grid">
+<section class="liability-content">
     <article class="panel">
         <div class="panel-header">
             <h2>Add Liability</h2>
@@ -377,24 +377,11 @@
                                         <p class="muted-text">
                                             No debt payments recorded yet.
                                         </p>
-                                    {% endif %}
+                                    {% endif %}›
                                 </div>
                             </details>
-
-                            
+                        
                         </div>
-
-                        <form
-                            method="post"
-                            action="{{ url_for(
-                                'liabilities.toggle',
-                                liability_id=liability.id
-                            ) }}"
-                        >
-                            <button class="btn btn-secondary" type="submit">
-                                {{ "Close" if liability.is_active else "Reopen" }}
-                            </button>
-                        </form>
                     </div>
                 {% endfor %}
             </div>

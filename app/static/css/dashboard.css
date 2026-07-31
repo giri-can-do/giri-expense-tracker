@@ -40,6 +40,18 @@
     gap: 24px;
 }
 
+.liability-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.liability-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 20px;
+}
+
 .health-score {
     padding: 18px;
     margin-bottom: 18px;
