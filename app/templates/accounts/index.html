@@ -9,7 +9,7 @@
 {% set description = "Manage the accounts that hold or owe your money." %}
 {% include "components/page_header.html" %}
 
-<section class="content-grid">
+<section class="account-content">
     <article class="panel">
         <div class="panel-header">
             <h2>Add Account</h2>
@@ -71,9 +71,23 @@
                             <span>{{ account.account_type | replace("_", " ") | title }}</span>
                         </div>
 
-                        <strong>
-                            ¥{{ "{:,.0f}".format(account.opening_balance) }}
-                        </strong>
+                        <div class="account-balance">
+                            <small class="muted-text">
+                                {% if account.account_type == "credit_card" %}
+                                    Current Debt
+                                {% else %}
+                                    Current Balance
+                                {% endif %}
+                            </small>
+
+                            <strong
+                                class="{% if account.account_type == 'credit_card' %}
+                                    negative
+                                {% endif %}"
+                            >
+                                ¥{{ "{:,.0f}".format(account.current_balance) }}
+                            </strong>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

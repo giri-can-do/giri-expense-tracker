@@ -7,7 +7,7 @@ from sqlalchemy import func
 from app import db
 from app.models import Account, Transaction, Category
 from typing import Optional
-
+from app.services.account_service import AccountService
 
 class DashboardService:
     @staticmethod
@@ -106,80 +106,17 @@ class DashboardService:
 
     @staticmethod
     def get_account_totals(user_id: int) -> dict:
-        asset_types = {
-            "bank",
-            "cash",
-            "investment",
-        }
-
-        liability_types = {
-            "credit_card",
-        }
-
-        accounts = Account.query.filter_by(
-            user_id=user_id,
-            is_active=True,
-        ).all()
-
-        total_assets = Decimal("0")
-        total_liabilities = Decimal("0")
-
-        for account in accounts:
-            balance = Decimal(account.opening_balance or 0)
-
-            if account.account_type in asset_types:
-                total_assets += balance
-            elif account.account_type in liability_types:
-                total_liabilities += balance
-
-        return {
-            "assets": total_assets,
-            "liabilities": total_liabilities,
-        }
+        return AccountService.get_account_totals(user_id)
 
     @staticmethod
     def get_net_worth(user_id: int) -> Decimal:
-        account_totals = DashboardService.get_account_totals(user_id)
-
-        income_total = (
-            db.session.query(
-                func.coalesce(func.sum(Transaction.amount), 0)
-            )
-            .filter(
-                Transaction.user_id == user_id,
-                Transaction.transaction_type == "income",
-            )
-            .scalar()
+        account_totals = (
+            DashboardService.get_account_totals(user_id)
         )
 
-        expense_total = (
-            db.session.query(
-                func.coalesce(func.sum(Transaction.amount), 0)
-            )
-            .filter(
-                Transaction.user_id == user_id,
-                Transaction.transaction_type == "expense",
-            )
-            .scalar()
-        )
-
-        debt_payment_total = (
-            db.session.query(
-                func.coalesce(func.sum(Transaction.amount), 0)
-            )
-            .filter(
-                Transaction.user_id == user_id,
-                Transaction.transaction_type == "debt_payment",
-            )
-            .scalar()
-        )
-        
         return (
             account_totals["assets"]
             - account_totals["liabilities"]
-            + Decimal(income_total or 0)
-            - Decimal(expense_total or 0)
-            - Decimal(debt_payment_total or 0)
         )
 
     @staticmethod
