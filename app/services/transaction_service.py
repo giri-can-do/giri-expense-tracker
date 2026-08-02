@@ -157,6 +157,21 @@ class TransactionService:
         if transaction_type not in TransactionService.VALID_TYPES:
             raise ValueError("Invalid transaction type.")
 
+        account_id = TransactionService._parse_required_id(
+            account_id,
+            "Account",
+        )
+
+        category_id = TransactionService._parse_optional_id(
+            category_id,
+            "Category",
+        )
+
+        liability_id = TransactionService._parse_optional_id(
+            liability_id,
+            "Liability",
+        )
+
         account = Account.query.filter_by(
             id=account_id,
             user_id=user_id,
@@ -230,3 +245,39 @@ class TransactionService:
         except Exception:
             db.session.rollback()
             raise
+
+    @staticmethod
+    def _parse_required_id(value, field_name: str) -> int:
+        try:
+            parsed_value = int(value)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(
+                f"Please select a valid {field_name.lower()}."
+            ) from exc
+
+        if parsed_value <= 0:
+            raise ValueError(
+                f"Please select a valid {field_name.lower()}."
+            )
+
+        return parsed_value
+
+
+    @staticmethod
+    def _parse_optional_id(value, field_name: str):
+        if value in (None, "", "None"):
+            return None
+
+        try:
+            parsed_value = int(value)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(
+                f"Please select a valid {field_name.lower()}."
+            ) from exc
+
+        if parsed_value <= 0:
+            raise ValueError(
+                f"Please select a valid {field_name.lower()}."
+            )
+
+        return parsed_value
